@@ -5,11 +5,15 @@ import { PRODUCT_DETAILS } from '@/lib/constants';
 
 export const runtime = 'nodejs';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2026-02-25.clover',
-});
+function getStripe() {
+  return new Stripe(process.env.STRIPE_SECRET_KEY!, {
+    apiVersion: '2026-02-25.clover',
+  });
+}
 
-const WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET!;
+function getWebhookSecret() {
+  return process.env.STRIPE_WEBHOOK_SECRET!;
+}
 
 // Create a Supabase service client without cookies (for webhook context)
 function createServiceClient() {
@@ -115,7 +119,7 @@ export async function POST(request: NextRequest) {
     let event: Stripe.Event;
 
     try {
-      event = stripe.webhooks.constructEvent(body, signature, WEBHOOK_SECRET);
+      event = getStripe().webhooks.constructEvent(body, signature, getWebhookSecret());
     } catch (err) {
       console.error('[webhook] Signature verification failed:', err);
       return NextResponse.json({ error: 'Invalid signature' }, { status: 400 });

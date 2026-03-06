@@ -3,9 +3,11 @@ import Stripe from 'stripe';
 import { createClient } from '@/lib/supabase/server';
 import { PRODUCTS, PRODUCT_DETAILS } from '@/lib/constants';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2026-02-25.clover',
-});
+function getStripe() {
+  return new Stripe(process.env.STRIPE_SECRET_KEY!, {
+    apiVersion: '2026-02-25.clover',
+  });
+}
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 
@@ -46,7 +48,7 @@ export async function POST(request: NextRequest) {
       productId as (typeof SUBSCRIPTION_PRODUCT_IDS)[number],
     );
 
-    const session = await stripe.checkout.sessions.create({
+    const session = await getStripe().checkout.sessions.create({
       mode: isSubscription ? 'subscription' : 'payment',
       line_items: [
         {
