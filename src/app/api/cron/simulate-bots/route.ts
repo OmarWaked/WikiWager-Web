@@ -48,11 +48,12 @@ export async function GET(request: NextRequest) {
     const dayOfWeek = new Date().getUTCDay();
     const weekendBoost = (dayOfWeek === 0 || dayOfWeek === 6) ? 1.2 : 1.0;
 
-    // Fetch all bot users
+    // Fetch all bot users (override default 1000 row limit)
     const { data: bots, error: botsError } = await serviceClient
       .from('users')
       .select('id, display_name, avatar_emoji, lifetime_score, today_score, current_streak, best_streak, last_played_date, total_correct, total_wrong')
-      .eq('is_bot', true);
+      .eq('is_bot', true)
+      .limit(3000);
 
     if (botsError) {
       console.error('Failed to query bots:', botsError);
