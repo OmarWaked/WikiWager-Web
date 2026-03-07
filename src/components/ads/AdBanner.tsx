@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
 import { ADSENSE_PUB_ID } from '@/lib/constants';
 
@@ -30,8 +30,9 @@ export function AdBanner({
   format = 'auto',
   className,
 }: AdBannerProps) {
-  const adRef = useRef<HTMLModElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const pushed = useRef(false);
+  const [adLoaded, setAdLoaded] = useState(false);
 
   useEffect(() => {
     if (pushed.current) return;
@@ -44,20 +45,61 @@ export function AdBanner({
     }
   }, []);
 
+  // Observe the ad container — if an ad fills, it will have content/height
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const observer = new MutationObserver(() => {
+      const ins = container.querySelector('ins.adsbygoogle');
+      if (ins) {
+        const status = ins.getAttribute('data-ad-status');
+        if (status === 'filled') {
+          setAdLoaded(true);
+        }
+        // If the ins element has actual rendered children or height, show it
+        if (ins.clientHeight > 0) {
+          setAdLoaded(true);
+        }
+      }
+    });
+
+    observer.observe(container, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['data-ad-status', 'style'],
+    });
+
+    // Also check after a delay — ads may take a moment to fill
+    const timer = setTimeout(() => {
+      const ins = container.querySelector('ins.adsbygoogle');
+      if (ins) {
+        const status = ins.getAttribute('data-ad-status');
+        if (status === 'filled' || ins.clientHeight > 0) {
+          setAdLoaded(true);
+        }
+      }
+    }, 2000);
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(timer);
+    };
+  }, []);
+
   const styles = formatStyles[format];
 
   return (
     <div
+      ref={containerRef}
       className={cn(
         'ad-container flex flex-col items-center justify-center',
+        !adLoaded && 'hidden',
         className,
       )}
     >
-      <span className="text-[10px] text-muted-gray/50 uppercase tracking-widest mb-1">
-        Advertisement
-      </span>
       <ins
-        ref={adRef}
         className="adsbygoogle"
         style={{
           display: 'block',

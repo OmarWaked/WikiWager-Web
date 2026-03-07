@@ -8,7 +8,7 @@ import { ReferralCard } from '@/components/social/ReferralCard';
 import { FriendsList } from '@/components/social/FriendsList';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { NeonButton } from '@/components/ui/NeonButton';
-import { ADSENSE_PUB_ID } from '@/lib/constants';
+import { AdBanner } from '@/components/ads/AdBanner';
 import type { Friend } from '@/types/user';
 
 export default function FriendsPage() {
@@ -200,17 +200,7 @@ export default function FriendsPage() {
         <FriendsList friends={friends} />
       </motion.div>
 
-      {/* AdBanner */}
-      <div className="ad-container rounded-xl overflow-hidden">
-        <ins
-          className="adsbygoogle"
-          style={{ display: 'block' }}
-          data-ad-client={ADSENSE_PUB_ID}
-          data-ad-slot="friends-bottom"
-          data-ad-format="auto"
-          data-full-width-responsive="true"
-        />
-      </div>
+      <AdBanner slot="friends-bottom" format="auto" />
     </div>
   );
 }

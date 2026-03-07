@@ -1,3 +1,4 @@
+import { Navbar } from '@/components/landing/Navbar';
 import { Hero } from '@/components/landing/Hero';
 import { Ticker } from '@/components/landing/Ticker';
 import { HowItWorks } from '@/components/landing/HowItWorks';
@@ -20,6 +21,9 @@ export default function Home() {
         <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] rounded-full bg-electric-cyan/[0.03] blur-[130px] animate-gradient" />
       </div>
 
+      {/* Navigation */}
+      <Navbar />
+
       {/* Content */}
       <main className="relative z-10">
         <Hero />
@@ -27,24 +31,18 @@ export default function Home() {
 
         <HowItWorks />
 
-        <div className="max-w-4xl mx-auto px-4 py-4">
-          <AdBanner slot="landing-how-it-works" format="horizontal" />
-        </div>
+        <AdBanner slot="landing-how-it-works" format="horizontal" className="max-w-4xl mx-auto px-4" />
 
         <GamePreview />
         <Features />
 
-        <div className="max-w-4xl mx-auto px-4 py-4">
-          <AdBanner slot="landing-features" format="horizontal" />
-        </div>
+        <AdBanner slot="landing-features" format="horizontal" className="max-w-4xl mx-auto px-4" />
 
         <StreakDemo />
         <Reviews />
         <Referral />
 
-        <div className="max-w-4xl mx-auto px-4 py-4">
-          <AdBanner slot="landing-referral" format="horizontal" />
-        </div>
+        <AdBanner slot="landing-referral" format="horizontal" className="max-w-4xl mx-auto px-4" />
 
         <FAQ />
         <CTASection />

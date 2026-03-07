@@ -20,6 +20,10 @@ export const metadata: Metadata = {
   title: 'WikiWager - The Daily Wikipedia Game',
   description:
     'Think you know everything? Bet your brain on Wikipedia trivia.',
+  icons: {
+    icon: '/favicon.svg',
+    apple: '/icon.svg',
+  },
   openGraph: {
     title: 'WikiWager - The Daily Wikipedia Game',
     description:
