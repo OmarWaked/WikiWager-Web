@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useGameStore } from '@/stores/gameStore';
 import { useUserStore } from '@/stores/userStore';
@@ -8,6 +8,7 @@ import { cn, formatNumber } from '@/lib/utils';
 import { NeonButton } from '@/components/ui/NeonButton';
 import { GradientButton } from '@/components/ui/GradientButton';
 import { StreakBadge } from '@/components/ui/StreakBadge';
+import { NEAR_MISS_MESSAGES } from '@/lib/constants';
 
 // Pre-computed confetti particles
 const confettiParticles = Array.from({ length: 24 }, (_, i) => ({
@@ -38,6 +39,11 @@ export function ResultView() {
 
   const [showContent, setShowContent] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
+
+  const nearMissMessage = useMemo(
+    () => NEAR_MISS_MESSAGES[Math.floor(Math.random() * NEAR_MISS_MESSAGES.length)],
+    [] // only compute once per mount
+  );
 
   useEffect(() => {
     const contentTimer = setTimeout(() => setShowContent(true), 100);
@@ -199,6 +205,16 @@ export function ResultView() {
                 </p>
               </div>
             )}
+
+            {/* Near-miss encouragement */}
+            <motion.p
+              className="text-sm text-gold-flash/80 italic"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+            >
+              {nearMissMessage}
+            </motion.p>
 
             {/* Streak lost + tries remaining */}
             <div className="flex items-center justify-center gap-6 text-sm">

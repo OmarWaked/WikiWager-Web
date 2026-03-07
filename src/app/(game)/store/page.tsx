@@ -172,7 +172,7 @@ function StoreContent() {
               <motion.div key={id} variants={itemVariants}>
                 <ProductCard
                   name={details.name}
-                  price={details.price}
+                  price={details.displayPrice}
                   description={`${details.guesses} extra guesses`}
                   tag={details.tag}
                   icon="🎯"
@@ -200,7 +200,7 @@ function StoreContent() {
               <motion.div key={id} variants={itemVariants}>
                 <ProductCard
                   name={details.name}
-                  price={details.price}
+                  price={details.displayPrice}
                   description={`${details.shields} streak shield${details.shields > 1 ? 's' : ''}`}
                   tag={details.tag}
                   icon="🛡️"
@@ -228,7 +228,7 @@ function StoreContent() {
               <motion.div key={id} variants={itemVariants}>
                 <ProductCard
                   name={details.name}
-                  price={details.price}
+                  price={details.displayPrice}
                   description={`${details.revenge} revenge token${details.revenge > 1 ? 's' : ''}`}
                   tag={details.tag}
                   icon="🗡️"
@@ -256,7 +256,7 @@ function StoreContent() {
               <motion.div key={id} variants={itemVariants}>
                 <BundleCard
                   name={details.name}
-                  price={details.price}
+                  price={details.displayPrice}
                   tag={details.tag}
                   guesses={details.guesses}
                   shields={details.shields}
@@ -281,7 +281,7 @@ function StoreContent() {
           <motion.div variants={itemVariants}>
             <SubscriptionCard
               name="Weekly Pass"
-              price={PRODUCT_DETAILS.weeklyPass.price}
+              price={PRODUCT_DETAILS.weeklyPass.displayPrice}
               tag={PRODUCT_DETAILS.weeklyPass.tag}
               isActive={user?.has_weekly_pass ?? false}
               features={[
@@ -296,7 +296,7 @@ function StoreContent() {
           <motion.div variants={itemVariants}>
             <SubscriptionCard
               name="Monthly VIP"
-              price={PRODUCT_DETAILS.monthlyVIP.price}
+              price={PRODUCT_DETAILS.monthlyVIP.displayPrice}
               tag={PRODUCT_DETAILS.monthlyVIP.tag}
               isActive={user?.is_vip ?? false}
               isVIP

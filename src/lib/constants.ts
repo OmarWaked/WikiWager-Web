@@ -40,38 +40,239 @@ export const COLORS = {
 } as const;
 
 // ---- Stripe Product IDs ----
+// These map to Stripe Price IDs. Replace with real IDs after creating products in Stripe Dashboard.
+// To create in Stripe: Dashboard → Products → Add Product → copy the price_xxx ID
 export const PRODUCTS = {
-  guesses5:      'price_guesses5',
-  guesses15:     'price_guesses15',
-  guesses50:     'price_guesses50',
-  shield1:       'price_shield1',
-  shield3:       'price_shield3',
-  shield10:      'price_shield10',
-  revenge1:      'price_revenge1',
-  revenge5:      'price_revenge5',
-  starterPack:   'price_starter_pack',
-  proPack:       'price_pro_pack',
-  ultimatePack:  'price_ultimate_pack',
-  weeklyPass:    'price_weekly_pass',
-  monthlyVIP:    'price_monthly_vip',
+  guesses5:      'price_guesses5',       // TODO: Replace with real Stripe price ID
+  guesses15:     'price_guesses15',      // TODO: Replace with real Stripe price ID
+  guesses50:     'price_guesses50',      // TODO: Replace with real Stripe price ID
+  shield1:       'price_shield1',        // TODO: Replace with real Stripe price ID
+  shield3:       'price_shield3',        // TODO: Replace with real Stripe price ID
+  shield10:      'price_shield10',       // TODO: Replace with real Stripe price ID
+  revenge1:      'price_revenge1',       // TODO: Replace with real Stripe price ID
+  revenge5:      'price_revenge5',       // TODO: Replace with real Stripe price ID
+  starterPack:   'price_starter_pack',   // TODO: Replace with real Stripe price ID
+  proPack:       'price_pro_pack',       // TODO: Replace with real Stripe price ID
+  ultimatePack:  'price_ultimate_pack',  // TODO: Replace with real Stripe price ID
+  weeklyPass:    'price_weekly_pass',    // TODO: Replace with real Stripe price ID
+  monthlyVIP:    'price_monthly_vip',    // TODO: Replace with real Stripe price ID
 } as const;
 
-// ---- Product Metadata ----
+// ---- Complete Product Catalog ----
+// Single source of truth for all products. Used by:
+//   - Store UI (name, displayPrice, tag)
+//   - Stripe checkout (amountCents, currency, mode)
+//   - Webhook fulfillment (guesses, shields, revenge)
+//   - iOS IAP cross-reference (iosProductId)
 export const PRODUCT_DETAILS = {
-  guesses5:     { name: '5 Guesses',     price: '$1.99',  guesses: 5,   shields: 0,  revenge: 0,  tag: '' },
-  guesses15:    { name: '15 Guesses',    price: '$3.99',  guesses: 15,  shields: 0,  revenge: 0,  tag: 'Popular' },
-  guesses50:    { name: '50 Guesses',    price: '$9.99',  guesses: 50,  shields: 0,  revenge: 0,  tag: '' },
-  shield1:      { name: '1 Shield',      price: '$0.99',  guesses: 0,   shields: 1,  revenge: 0,  tag: '' },
-  shield3:      { name: '3 Shields',     price: '$1.99',  guesses: 0,   shields: 3,  revenge: 0,  tag: 'Best Value' },
-  shield10:     { name: '10 Shields',    price: '$4.99',  guesses: 0,   shields: 10, revenge: 0,  tag: '' },
-  revenge1:     { name: '1 Revenge',     price: '$0.99',  guesses: 0,   shields: 0,  revenge: 1,  tag: '' },
-  revenge5:     { name: '5 Revenge',     price: '$2.99',  guesses: 0,   shields: 0,  revenge: 5,  tag: '' },
-  starterPack:  { name: 'Starter Pack',  price: '$4.99',  guesses: 10,  shields: 2,  revenge: 2,  tag: '20% Savings' },
-  proPack:      { name: 'Pro Pack',      price: '$9.99',  guesses: 30,  shields: 5,  revenge: 5,  tag: '35% Savings' },
-  ultimatePack: { name: 'Ultimate Pack', price: '$19.99', guesses: 100, shields: 15, revenge: 15, tag: '50% Savings' },
-  weeklyPass:   { name: 'Weekly Pass',   price: '$2.99/wk',  guesses: 50,  shields: 0,  revenge: 0,  tag: 'Unlimited' },
-  monthlyVIP:   { name: 'Monthly VIP',   price: '$9.99/mo',  guesses: 100, shields: 3,  revenge: 3,  tag: 'Best Value' },
+  // --- Guess Packs (one-time consumables) ---
+  guesses5: {
+    name: '5 Guesses',
+    displayPrice: '$1.99',
+    amountCents: 199,
+    currency: 'usd',
+    mode: 'payment' as const,
+    guesses: 5, shields: 0, revenge: 0,
+    tag: '',
+    iosProductId: 'com.wikiwager.guesses5',
+    stripeProductName: 'WikiWager - 5 Extra Guesses',
+    stripeDescription: '5 extra guesses for WikiWager',
+  },
+  guesses15: {
+    name: '15 Guesses',
+    displayPrice: '$3.99',
+    amountCents: 399,
+    currency: 'usd',
+    mode: 'payment' as const,
+    guesses: 15, shields: 0, revenge: 0,
+    tag: 'Popular',
+    iosProductId: 'com.wikiwager.guesses15',
+    stripeProductName: 'WikiWager - 15 Extra Guesses',
+    stripeDescription: '15 extra guesses for WikiWager',
+  },
+  guesses50: {
+    name: '50 Guesses',
+    displayPrice: '$9.99',
+    amountCents: 999,
+    currency: 'usd',
+    mode: 'payment' as const,
+    guesses: 50, shields: 0, revenge: 0,
+    tag: '',
+    iosProductId: 'com.wikiwager.guesses50',
+    stripeProductName: 'WikiWager - 50 Extra Guesses',
+    stripeDescription: '50 extra guesses for WikiWager',
+  },
+
+  // --- Streak Shields (one-time consumables) ---
+  shield1: {
+    name: '1 Shield',
+    displayPrice: '$0.99',
+    amountCents: 99,
+    currency: 'usd',
+    mode: 'payment' as const,
+    guesses: 0, shields: 1, revenge: 0,
+    tag: '',
+    iosProductId: 'com.wikiwager.shield1',
+    stripeProductName: 'WikiWager - 1 Streak Shield',
+    stripeDescription: 'Protect your streak from one wrong answer',
+  },
+  shield3: {
+    name: '3 Shields',
+    displayPrice: '$1.99',
+    amountCents: 199,
+    currency: 'usd',
+    mode: 'payment' as const,
+    guesses: 0, shields: 3, revenge: 0,
+    tag: 'Best Value',
+    iosProductId: 'com.wikiwager.shield3',
+    stripeProductName: 'WikiWager - 3 Streak Shields',
+    stripeDescription: '3 streak shields to protect your streak',
+  },
+  shield10: {
+    name: '10 Shields',
+    displayPrice: '$4.99',
+    amountCents: 499,
+    currency: 'usd',
+    mode: 'payment' as const,
+    guesses: 0, shields: 10, revenge: 0,
+    tag: '',
+    iosProductId: 'com.wikiwager.shield10',
+    stripeProductName: 'WikiWager - 10 Streak Shields',
+    stripeDescription: '10 streak shields to protect your streak',
+  },
+
+  // --- Revenge Tokens (one-time consumables) ---
+  revenge1: {
+    name: '1 Revenge',
+    displayPrice: '$0.99',
+    amountCents: 99,
+    currency: 'usd',
+    mode: 'payment' as const,
+    guesses: 0, shields: 0, revenge: 1,
+    tag: '',
+    iosProductId: 'com.wikiwager.revenge1',
+    stripeProductName: 'WikiWager - 1 Revenge Token',
+    stripeDescription: 'Retry a wrong answer with one option eliminated',
+  },
+  revenge5: {
+    name: '5 Revenge',
+    displayPrice: '$2.99',
+    amountCents: 299,
+    currency: 'usd',
+    mode: 'payment' as const,
+    guesses: 0, shields: 0, revenge: 5,
+    tag: '',
+    iosProductId: 'com.wikiwager.revenge5',
+    stripeProductName: 'WikiWager - 5 Revenge Tokens',
+    stripeDescription: '5 revenge tokens to retry wrong answers',
+  },
+
+  // --- Bundles (one-time consumables) ---
+  starterPack: {
+    name: 'Starter Pack',
+    displayPrice: '$4.99',
+    amountCents: 499,
+    currency: 'usd',
+    mode: 'payment' as const,
+    guesses: 10, shields: 2, revenge: 2,
+    tag: '20% Savings',
+    iosProductId: 'com.wikiwager.starter_pack',
+    stripeProductName: 'WikiWager - Starter Pack',
+    stripeDescription: '10 guesses + 2 shields + 2 revenge tokens (20% savings)',
+  },
+  proPack: {
+    name: 'Pro Pack',
+    displayPrice: '$9.99',
+    amountCents: 999,
+    currency: 'usd',
+    mode: 'payment' as const,
+    guesses: 30, shields: 5, revenge: 5,
+    tag: '35% Savings',
+    iosProductId: 'com.wikiwager.pro_pack',
+    stripeProductName: 'WikiWager - Pro Pack',
+    stripeDescription: '30 guesses + 5 shields + 5 revenge tokens (35% savings)',
+  },
+  ultimatePack: {
+    name: 'Ultimate Pack',
+    displayPrice: '$19.99',
+    amountCents: 1999,
+    currency: 'usd',
+    mode: 'payment' as const,
+    guesses: 100, shields: 15, revenge: 15,
+    tag: '50% Savings',
+    iosProductId: 'com.wikiwager.ultimate_pack',
+    stripeProductName: 'WikiWager - Ultimate Pack',
+    stripeDescription: '100 guesses + 15 shields + 15 revenge tokens (50% savings)',
+  },
+
+  // --- Subscriptions (recurring) ---
+  weeklyPass: {
+    name: 'Weekly Pass',
+    displayPrice: '$2.99/wk',
+    amountCents: 299,
+    currency: 'usd',
+    mode: 'subscription' as const,
+    interval: 'week' as const,
+    guesses: 50, shields: 0, revenge: 0,
+    tag: 'Unlimited',
+    iosProductId: 'com.wikiwager.weekly_pass',
+    stripeProductName: 'WikiWager - Weekly Pass',
+    stripeDescription: '50 guesses per week + ad-free experience',
+  },
+  monthlyVIP: {
+    name: 'Monthly VIP',
+    displayPrice: '$9.99/mo',
+    amountCents: 999,
+    currency: 'usd',
+    mode: 'subscription' as const,
+    interval: 'month' as const,
+    guesses: 100, shields: 3, revenge: 3,
+    tag: 'Best Value',
+    iosProductId: 'com.wikiwager.monthly_vip',
+    stripeProductName: 'WikiWager - Monthly VIP',
+    stripeDescription: '100 guesses + 3 shields + 3 revenge tokens per month + ad-free + VIP badge',
+  },
 } as const;
+
+// Helper: get display price (backwards compat)
+export type ProductId = keyof typeof PRODUCT_DETAILS;
+export function getProductPrice(id: ProductId): string {
+  return PRODUCT_DETAILS[id].displayPrice;
+}
+
+// ---- Bot Simulation Tiers ----
+export const BOT_TIERS = {
+  elite:    { tier: 'elite',    winRate: 0.80, playChance: 0.85, roundsRange: [2, 3] as const, streakBreakChance: 0.15 },
+  strong:   { tier: 'strong',   winRate: 0.65, playChance: 0.70, roundsRange: [2, 3] as const, streakBreakChance: 0.30 },
+  mid:      { tier: 'mid',      winRate: 0.50, playChance: 0.55, roundsRange: [1, 3] as const, streakBreakChance: 0.45 },
+  casual:   { tier: 'casual',   winRate: 0.35, playChance: 0.35, roundsRange: [1, 2] as const, streakBreakChance: 0.60 },
+  newcomer: { tier: 'newcomer', winRate: 0.25, playChance: 0.20, roundsRange: [1, 2] as const, streakBreakChance: 0.75 },
+} as const;
+
+export type BotTier = keyof typeof BOT_TIERS;
+
+export function getBotTierFromScore(lifetimeScore: number): typeof BOT_TIERS[BotTier] {
+  if (lifetimeScore >= 8000) return BOT_TIERS.elite;
+  if (lifetimeScore >= 3000) return BOT_TIERS.strong;
+  if (lifetimeScore >= 500) return BOT_TIERS.mid;
+  if (lifetimeScore >= 50) return BOT_TIERS.casual;
+  return BOT_TIERS.newcomer;
+}
+
+// ---- Near-Miss Messages (for wrong answers) ----
+export const NEAR_MISS_MESSAGES = [
+  'So close! That was a tough one.',
+  'Almost had it! Keep going.',
+  'Tricky question — most players miss this one.',
+  'You were on the right track!',
+  'Don\'t give up — your next one could be legendary!',
+  'The best players miss one now and then.',
+  'One wrong answer away from greatness!',
+  'Wikipedia can be deceiving — shake it off!',
+] as const;
+
+// ---- Ad Reward Limits ----
+export const AD_REWARDS_PER_DAY = 3;
 
 // ---- Leagues ----
 export const LEAGUES = {

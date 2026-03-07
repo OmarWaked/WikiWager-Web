@@ -3,6 +3,7 @@
     { "path": "/api/cron/daily-seed", "schedule": "0 0 * * *" },
     { "path": "/api/cron/daily-reset", "schedule": "5 0 * * *" },
     { "path": "/api/cron/deposit-guesses", "schedule": "0 12 * * *" },
-    { "path": "/api/cron/populate-wiki", "schedule": "0 6 * * *" }
+    { "path": "/api/cron/populate-wiki", "schedule": "0 6 * * *" },
+    { "path": "/api/cron/simulate-bots", "schedule": "0 8 * * *" }
   ]
 }

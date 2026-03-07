@@ -5,6 +5,8 @@ import { GlassCard } from '@/components/ui/GlassCard';
 import { StatBox } from '@/components/ui/StatBox';
 import { StreakBadge } from '@/components/ui/StreakBadge';
 import { CountdownTimer } from '@/components/ui/CountdownTimer';
+import { PlayersOnlineCounter } from './PlayersOnlineCounter';
+import { LiveActivityTicker } from './LiveActivityTicker';
 
 export function DailyStatusBar() {
   const user = useUserStore((s) => s.user);
@@ -16,6 +18,11 @@ export function DailyStatusBar() {
 
   return (
     <GlassCard className="space-y-4">
+      {/* Players online */}
+      <div className="flex items-center justify-between text-xs pb-2 border-b border-neon-violet/10">
+        <PlayersOnlineCounter compact />
+      </div>
+
       {/* Stat boxes row */}
       <div className="grid grid-cols-3 gap-3">
         <StatBox
@@ -58,6 +65,20 @@ export function DailyStatusBar() {
               useUserStore.getState().fetchUser();
             }}
           />
+        </div>
+      )}
+
+      {/* Live activity ticker */}
+      <div className="pt-2 border-t border-neon-violet/10">
+        <LiveActivityTicker />
+      </div>
+
+      {/* Personal best nudge */}
+      {user.today_score >= 500 && (
+        <div className="pt-2 border-t border-neon-violet/10 text-center">
+          <p className="text-xs text-gold-flash">
+            🔥 Incredible run today! Lock in to save your score.
+          </p>
         </div>
       )}
     </GlassCard>

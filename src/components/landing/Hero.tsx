@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { NeonButton } from '@/components/ui/NeonButton';
+import { PlayersOnlineCounter } from '@/components/game/PlayersOnlineCounter';
 
 const avatars = ['🧑‍💻', '👩‍🔬', '🧑‍🎨', '👨‍🚀', '👩‍🏫'];
 
@@ -104,6 +105,16 @@ export function Hero() {
         >
           How It Works
         </NeonButton>
+      </motion.div>
+
+      {/* Players online */}
+      <motion.div
+        className="mt-6"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6, delay: 0.85 }}
+      >
+        <PlayersOnlineCounter />
       </motion.div>
 
       {/* Social proof */}
